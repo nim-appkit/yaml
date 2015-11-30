@@ -149,12 +149,18 @@ proc lexWord(p: YamlParser) =
 
   # Check for indicators.
   if p.cur() in IndicatorChars:
-    p.words.add(YamlWord(
-      kind: ywkIndicator, 
-      indicator: YamlIndicator(int(p.cur())),
-      line: p.line()
-    ))
-    discard p.shift()
+    if p.cur() == char(yiComment):
+      # Skip the whole line after a comment char.
+      discard p.skipToNextLine()
+      # Add a newline, in case the line was not empty.
+      p.words.add(YamlWord(kind: ywkLineEnd))
+    else:
+      p.words.add(YamlWord(
+        kind: ywkIndicator, 
+        indicator: YamlIndicator(int(p.cur())),
+        line: p.line()
+      ))
+      discard p.shift()
     return
 
   # Check for Json schema types.
@@ -453,6 +459,12 @@ proc parseBlock(p: YamlParser, indent: int = 0): ValueRef =
     var lineIndent = 0
 
     var w = p.curWord() # Note: not shifting yet!
+
+    # Skip empty lines.
+    if w.kind == ywkIndent and not p.endReached() and p.curWord().kind == ywkLineEnd:
+      # Shift out the newline.
+      discard p.shiftWord()
+      continue
 
     if w.kind != ywkIndent and indent > 0:
       # End of block.

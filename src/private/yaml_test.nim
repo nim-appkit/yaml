@@ -57,6 +57,18 @@ str: |
   X
 """
 
+var yamlWithComments = """
+# Starting comment
+
+# Another comment
+map:
+  str: String # Inline comment
+  # Block inline comment
+  i: 22
+str: str
+# Final comment.
+"""
+
 var yamlMultiDocs = """
 ---
 str: A
@@ -336,6 +348,14 @@ Suite "YamlParser":
         data.should haveKey "str"
         data.str.should equal toValue("A\n B\n  C\nX\n")
 
+      It "Should parse doc with comments":
+        var data = parseYaml(yamlWithComments)
+        data.should haveLen 2
+        #data.len().should equal 2
+        #data.str.should equal "str"
+        #var map = @%(str: "String", i: 22)
+        #assert data.map == map
+
       It "Should parse multiple documents":
         var data = parseYaml(yamlMultiDocs)
         data.isSeq().should beTrue()
@@ -354,4 +374,6 @@ Suite "YamlParser":
         var data = parseYamlFile(path)
         data.numFloat.should equal 1.1
 
-        
+when isMainModule:
+  omega.run() 
+
