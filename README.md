@@ -18,6 +18,7 @@ Parse a yaml document:
 
 ```nim
 from yaml import nil
+# NOTICE: you must import the values package as well, for accesing the parsed data.
 import values
 
 var myYaml = """
