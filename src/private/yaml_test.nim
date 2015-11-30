@@ -9,6 +9,8 @@
 ##                                                                           ##
 ###############################################################################
 
+from os import nil
+
 import alpha, omega
 import values
 
@@ -344,5 +346,12 @@ Suite "YamlParser":
 
       It "Should parse a really complex yaml document":
         var data = parseYaml(yamlAll)
+
+      It "Should parse a yaml file":
+        var path = os.joinPath(os.getTempDir(), "nim_yaml_test_1.yaml")
+        writeFile(path, yamlTypedMap)
+
+        var data = parseYamlFile(path)
+        data.numFloat.should equal 1.1
 
         
