@@ -17,6 +17,9 @@ The parser returns the parsed yaml as *Value* objects, which are supplied by the
 Parse a yaml document:
 
 ```nim
+# NOTICE: you must import the values package as well, for accesing the parsed data.
+import values
+
 from yaml import nil
 
 var myYaml = """
@@ -60,6 +63,9 @@ var s1: string = blockSeq[0]
 ## Parsing multiple documents
 
 ```nim
+# NOTICE: you must import the values package as well, for accesing the parsed data.
+import values
+
 from yaml import nil
 
 var myYaml = """
@@ -79,6 +85,9 @@ for document in data:
 ## Parsing a YAML file.
 
 ```nim
+# NOTICE: you must import the values package as well, for accesing the parsed data.
+import values
+
 from yaml import nil
 var data = yaml.parseYamlFile()
 ```
