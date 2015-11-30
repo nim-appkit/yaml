@@ -14,7 +14,7 @@ nimble install yaml
 
 The parser returns the parsed yaml as *Value* objects, which are supplied by the [values](https://github.com/nim-appkit/values) package.
 
-Parse a simple yaml document:
+Parse a yaml document:
 
 ```nim
 from yaml import nil
@@ -27,8 +27,8 @@ blockSeq:
   - A
   - B
 mapping:
-  str: String
-longTest: >
+  str: Nested String
+longText: >
   Text
   Text
   Text
@@ -41,15 +41,20 @@ var data = yaml.parseYaml(myYaml)
 echo(data.str) => "String"
 var str = data.str[string]
 
+echo(data.mapping.str) => "Nested String"
+
 echo(data.hasKey("xxx")) => false
 
 echo(data.seq[2]) # => "false"
 var isFalse = data.seq[2][bool]
 
-echo(data.blockSeq.len())
+echo(data.blockSeq.len()) # => 2
+
 # Convert ValueSequence to actual seq[T].
 # Only works if the sequence only contains items of one type!
 var blockSeq = data.blockSeq.asSeq(string) 
+
+var s1: string = blockSeq[0]
 ```
 
 ## Parsing multiple documents
