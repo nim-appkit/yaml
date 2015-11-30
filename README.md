@@ -17,15 +17,13 @@ The parser returns the parsed yaml as *Value* objects, which are supplied by the
 Parse a yaml document:
 
 ```nim
-# NOTICE: you must import the values package as well, for accesing the parsed data.
-import values
-
 from yaml import nil
+import values
 
 var myYaml = """
 str: String
 quotedString: "String \n String"
-seq: [1, "a", false]
+inlineSeq: [1, "a", false]
 blockSeq:
   - A
   - B
@@ -41,15 +39,15 @@ var data = yaml.parseYaml(myYaml)
 
 # Accessing the data.
 
-echo(data.str) => "String"
+echo(data.str) # => "String"
 var str = data.str[string]
 
-echo(data.mapping.str) => "Nested String"
+echo(data.mapping.str) # => "Nested String"
 
-echo(data.hasKey("xxx")) => false
+echo(data.hasKey("xxx")) # => false
 
-echo(data.seq[2]) # => "false"
-var isFalse = data.seq[2][bool]
+echo(data.inlineSeq[2]) # => "false"
+var isFalse = data.inlineSeq[2][bool]
 
 echo(data.blockSeq.len()) # => 2
 
